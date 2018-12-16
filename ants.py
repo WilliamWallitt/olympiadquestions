@@ -73,9 +73,19 @@ def ants():
     ant1_true = True
     ant2_true = True
 
+    # if user enters a two digit number
+    if len(ant1) > 3:
+        x = 3
+    else:
+        x = 2
+    if len(ant2) > 3:
+        y = 3
+    else:
+        y = 2
+
     # initialise ant1/ant2 starting position and dir on the grid
-    x1, y1, dr1, x2, y2, dr2 = int(ant1[0]) - 1, 10 - (int(ant1[1]) - 1), dict[ant1[2].upper()], \
-                               int(ant2[0]) - 1, 10 - (int(ant2[1]) - 1), dict[ant2[2].upper()]
+    x1, y1, dr1, x2, y2, dr2 = int(ant1[0]) - 1, 10 - (int(ant1[1]) - 1), dict[ant1[x].upper()], \
+                               int(ant2[0]) - 1, 10 - (int(ant2[1]) - 1), dict[ant2[y].upper()]
 
     # prints grid and ant's coordinates and heading
     def printing(grid_list):
@@ -122,7 +132,6 @@ def ants():
                 # set the returned values = updated x,y,dr values
                 x1, y1, dr1 = moving(x1, y1, dr1)
                 x2, y2, dr2 = moving(x2, y2, dr2)
-
                 # check if ant still on grid, if not remove ant
                 if x1 > 10 or x1 < 0 or y1 < 0 or y1 > 10:
                     ant1_true = False
