@@ -134,7 +134,7 @@ def ants():
             # if both ants are off the board then exit the programme (as game over)
             if ant1_true is False and ant2_true is False:
                 return
-
+            # call function - printing()
             printing(grid)
 
 ants()
