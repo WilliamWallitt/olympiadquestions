@@ -12,7 +12,6 @@ def bubble_sort():
             if unsorted_list[j] > unsorted_list[j + 1]:
                 unsorted_list[j], unsorted_list[j+1] = unsorted_list[j + 1], unsorted_list[j]
 
-
     return unsorted_list
 
 print(bubble_sort())

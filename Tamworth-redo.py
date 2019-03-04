@@ -26,7 +26,7 @@ def coordinates(x_coord, y_coord):
 
 
 # taking in user_input and adding it to grid
-def user_input_to_coordinates(user_input, replace_with):
+def user_input_to_coordinates(user_input, replace_with, condition=False):
 
     p_or_f = ['P', 'F']
 
@@ -34,20 +34,28 @@ def user_input_to_coordinates(user_input, replace_with):
         x, y = grid_index(user_input[0], user_input[1])
         if grid[y][x] not in p_or_f:
             grid[y][x] = replace_with
+        elif condition is True:
+            grid[y][x] = replace_with
 
     elif len(user_input) == 3:
         if user_input[1] == '0':
             x, y = grid_index(user_input[0:2], user_input[2:])
             if grid[y][x] not in p_or_f:
                 grid[y][x] = replace_with
+            elif condition is True:
+                grid[y][x] = replace_with
         elif user_input[2] == '0':
             x, y = grid_index(user_input[0], user_input[1:])
             if grid[y][x] not in p_or_f:
+                grid[y][x] = replace_with
+            elif condition is True:
                 grid[y][x] = replace_with
 
     elif len(user_input) == 4:
         x, y = grid_index(user_input[0:2], user_input[2:])
         if grid[y][x] not in p_or_f:
+            grid[y][x] = replace_with
+        elif condition is True:
             grid[y][x] = replace_with
 
 user_input_to_coordinates(pigs, 'P')
@@ -104,43 +112,49 @@ def simulating_moves(pigs_location, farmer_location, moves):
             direction = direction - 360
 
         if direction == 0:
-            if y - 1 <= 0:
+            if y - 1 < 0:
                 direction += 90
             elif grid[y - 1][x] == '*':
                 direction += 90
+            elif grid[y - 1][x] == 'P' or 'F':
+                y -= 1
             else:
                 y -= 1
 
         elif direction == 90:
-            if x + 1 >= 9:
+            if x + 1 > 9:
                 direction += 90
             elif grid[y][x + 1] == '*':
                 direction += 90
+            elif grid[y][x + 1] == 'P' or 'F':
+                x += 1
             else:
                 x += 1
 
         elif direction == 180:
-            if y + 1 >= 9:
+            if y + 1 > 9:
                 direction += 90
             elif grid[y + 1][x] == '*':
                 direction += 90
+            elif grid[y + 1][x] == 'P' or 'F':
+                y += 1
             else:
                 y += 1
 
         elif direction == 270:
-            if x - 1 <= 0:
+            if x - 1 < 0:
                 direction += 90
             elif grid[y][x - 1] == '*':
                 direction += 90
+            elif grid[y][x - 1] == 'P' or 'F':
+                x -= 1
             else:
                 x -= 1
 
         return x, y, direction
 
     counter = 0
-    for turns in range(int(moves) + 1):
-
-        print_grid(grid)
+    for turns in range(int(moves)):
 
         grid[pig_y][pig_x] = '.'
         grid[farmer_y][farmer_x] = '.'
@@ -149,11 +163,8 @@ def simulating_moves(pigs_location, farmer_location, moves):
         fx, fy = (coordinates(farmer_x, farmer_y))
 
         if px == fx and py == fy:
-            print('Farmer and pigs meet on move ' + str(counter + 1) + ' at (' + str(px) + ',' + str(py + 1) + ')')
-            break
-        else:
-            print('Farmer: ', fx, fy)
-            print('Pigs : ', px, py)
+
+            print('Farmer and pigs meet on move ' + str(counter) + ' at (' + str(px) + ',' + str(10 - py) + ')')
 
         pig_x, pig_y, pig_direction = where_to_move(pig_x, pig_y, pig_direction)
         farmer_x, farmer_y, farmer_direction = where_to_move(farmer_x, farmer_y, farmer_direction)
@@ -162,7 +173,7 @@ def simulating_moves(pigs_location, farmer_location, moves):
         grid[farmer_y][farmer_x] = 'F'
 
         counter += 1
-
+    print_grid(grid)
 
 # printing the grid
 def print_grid(grid_to_print):
@@ -197,6 +208,4 @@ while not condition:
         condition = True
         print("Exiting Now!")
         break
-
-
 
